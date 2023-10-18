@@ -101,9 +101,9 @@ module top
         end
         else if (x > 100 & y > 100 & x < 150 & y < 400)  // Rectangle
         begin
-            red   = x [w_x - 2 -: 4];
+            red   = x [w_x - 2 -: w_vgar];
             green = '1;
-            blue  = y [w_y - 2 -: 4];
+            blue  = y [w_y - 2 -: w_vgab];
         end
         `ifdef YOSYS
         else if ((((x - 400) * (x - 400)) + 2 * (y - 300) * (y - 300) ) < (100 * 100))  // Ellipse
@@ -112,13 +112,13 @@ module top
         `endif
         begin
             red   = '1;
-            green = x [w_x - 2 -: 4];
-            blue  = y [w_y - 2 -: 4];
+            green = x [w_x - 2 -: w_vgag];
+            blue  = y [w_y - 2 -: w_vgab];
         end
         else if (x_2 [9 +: w_y] < y)  // Parabola
         begin
-            red   = x [w_x - 2 -: 4];
-            green = y [w_y - 2 -: 4];
+            red   = x [w_x - 2 -: w_vgar];
+            green = y [w_y - 2 -: w_vgag];
             blue  = '1;
         end
     end
