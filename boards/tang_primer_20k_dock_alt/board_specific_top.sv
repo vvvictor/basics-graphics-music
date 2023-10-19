@@ -1,6 +1,8 @@
 `include "config.svh"
 `include "lab_specific_config.svh"
 
+ `define ENABLE_VGA16
+
 module board_specific_top
 # (
     parameter   clk_mhz = 27,
@@ -53,6 +55,17 @@ module board_specific_top
 
     `endif
 
+    `ifdef ENABLE_VGA16
+        localparam w_top_red   = 5,
+                   w_top_green = 6,
+                   w_top_blue  = 5;
+    `else
+        localparam w_top_red   = 4,
+                   w_top_green = 4,
+                   w_top_blue  = 4;
+    `endif
+
+
     //------------------------------------------------------------------------
 
     wire  [w_tm_key    - 1:0] tm_key;
@@ -71,9 +84,9 @@ module board_specific_top
     wire                      VGA_HS;
     wire                      VGA_VS;
 
-    wire  [              3:0] VGA_R;
-    wire  [              3:0] VGA_G;
-    wire  [              3:0] VGA_B;
+    wire  [ w_top_red   - 1:0] VGA_R;
+    wire  [ w_top_green - 1:0] VGA_G;
+    wire  [ w_top_blue  - 1:0] VGA_B;
 
     //------------------------------------------------------------------------
 
@@ -113,6 +126,11 @@ module board_specific_top
         .w_led   ( w_top_led    ),
         .w_digit ( w_top_digit  ),
         .w_gpio  ( w_gpio       )
+    `ifdef ENABLE_VGA16
+      , .w_vgar  ( w_top_red    )     
+      , .w_vgag  ( w_top_green  )     
+      , .w_vgab  ( w_top_blue   )     
+    `endif
     )
     i_top
     (
@@ -186,7 +204,16 @@ module board_specific_top
 
     //------------------------------------------------------------------------
 
-    assign GPIO_3 = {VGA_B, VGA_R};
-    assign GPIO_2 = {VGA_HS, VGA_VS, 2'bz, VGA_G};
+   `ifdef ENABLE_VGA16
 
+      assign GPIO_3 = {2'bz, VGA_R[3], VGA_R[1], 2'bz, VGA_R[4], VGA_R[2]}; 
+      assign GPIO_2 = {VGA_G[5], VGA_G[3], VGA_G[1], VGA_B[4], VGA_R[0], VGA_G[4], VGA_G[2], VGA_G[0]}; 
+      assign GPIO_1 = {VGA_B[2], VGA_B[0], VGA_HS, 1'bz, VGA_B[3], VGA_B[1], VGA_VS, 1'bz};
+
+   `else
+
+      assign GPIO_3 = {VGA_B, VGA_R};
+      assign GPIO_2 = {VGA_HS, VGA_VS, 2'bz, VGA_G};
+
+   `endif 
 endmodule
