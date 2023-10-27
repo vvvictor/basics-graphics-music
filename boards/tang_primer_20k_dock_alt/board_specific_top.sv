@@ -1,7 +1,7 @@
 `include "config.svh"
 `include "lab_specific_config.svh"
 
- `define ENABLE_VGA16
+// `define ENABLE_VGA16
 
 module board_specific_top
 # (
@@ -212,8 +212,8 @@ module board_specific_top
 
    `else
 
-      assign GPIO_3 = {VGA_B, VGA_R};
-      assign GPIO_2 = {VGA_HS, VGA_VS, 2'bz, VGA_G};
+      assign GPIO_2 = { VGA_B, VGA_R };
+      assign GPIO_3 = { 2'bz, VGA_VS, VGA_HS, VGA_G };
 
    `endif 
 endmodule
