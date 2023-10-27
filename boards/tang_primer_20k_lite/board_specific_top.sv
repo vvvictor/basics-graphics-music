@@ -68,8 +68,8 @@ module board_specific_top
     wire  [              7:0] abcdefgh;
     wire  [             23:0] mic;
 
-    wire                      VGA_HS;
-    wire                      VGA_VS;
+    wire                      VGA_HS = GPIO_1[0];
+    wire                      VGA_VS = GPIO_1[1];
 
     wire  [              3:0] VGA_R;
     wire  [              3:0] VGA_G;
@@ -186,7 +186,10 @@ module board_specific_top
 
     //------------------------------------------------------------------------
 
-    assign GPIO_0= { VGA_B, VGA_R };
-    assign GPIO_1 = { VGA_HS, VGA_VS, 2'bz, VGA_G };
+    assign GPIO_0 = { VGA_B, VGA_R };
+//    assign GPIO_1 = { VGA_G, 2'b00, VGA_VS, VGA_HS  };
+    assign GPIO_1[7 -:4] = VGA_G;
+//    assign GPIO_1[1] = VGA_VS;
+//    assign GPIO_1[0] = VGA_HS;
 
 endmodule
