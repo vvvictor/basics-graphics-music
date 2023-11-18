@@ -148,7 +148,7 @@ module board_specific_top
 
     //------------------------------------------------------------------------
 
-    tm1638_board_controller
+    /*tm1638_board_controller
     # (
         .w_digit ( w_tm_digit )
     )
@@ -163,7 +163,7 @@ module board_specific_top
         .sio_clk  ( GPIO [0]  ),
         .sio_stb  ( GPIO [1]  ),
         .sio_data ( GPIO [2]  )
-    );
+    );*/
 
     //------------------------------------------------------------------------
 

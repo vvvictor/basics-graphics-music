@@ -2,6 +2,8 @@
 `include "lab_specific_config.svh"
 
 // `define ENABLE_VGA16
+ `define ENABLE_VGA666
+
 
 module board_specific_top
 # (
@@ -59,6 +61,10 @@ module board_specific_top
         localparam w_top_red   = 5,
                    w_top_green = 6,
                    w_top_blue  = 5;
+    `elsif ENABLE_VGA666
+        localparam w_top_red   = 6,
+                   w_top_green = 6,
+                   w_top_blue  = 6;
     `else
         localparam w_top_red   = 4,
                    w_top_green = 4,
@@ -127,6 +133,10 @@ module board_specific_top
         .w_digit ( w_top_digit  ),
         .w_gpio  ( w_gpio       )
     `ifdef ENABLE_VGA16
+      , .w_vgar  ( w_top_red    )     
+      , .w_vgag  ( w_top_green  )     
+      , .w_vgab  ( w_top_blue   )     
+    `elsif ENABLE_VGA666
       , .w_vgar  ( w_top_red    )     
       , .w_vgag  ( w_top_green  )     
       , .w_vgab  ( w_top_blue   )     
@@ -209,6 +219,12 @@ module board_specific_top
       assign GPIO_3 = {2'bz, VGA_R[3], VGA_R[1], 2'bz, VGA_R[4], VGA_R[2]}; 
       assign GPIO_2 = {VGA_G[5], VGA_G[3], VGA_G[1], VGA_B[4], VGA_R[0], VGA_G[4], VGA_G[2], VGA_G[0]}; 
       assign GPIO_1 = {VGA_B[2], VGA_B[0], VGA_HS, 1'bz, VGA_B[3], VGA_B[1], VGA_VS, 1'bz};
+
+   `elsif ENABLE_VGA666
+
+      assign GPIO_3 = { VGA_G[4], VGA_G[5], VGA_R[2], VGA_B[4], VGA_VS,   VGA_HS,   VGA_B[0], VGA_R[1] };
+      assign GPIO_2 = { VGA_B[3], VGA_G[2], VGA_R[0], VGA_R[4], VGA_G[0], VGA_B[5], VGA_G[1], VGA_B[1] }; 
+      assign GPIO_1 = { VGA_R[5], 3'bz,                         VGA_B[2], VGA_G[3], VGA_R[3], 1'bz }; 
 
    `else
 
